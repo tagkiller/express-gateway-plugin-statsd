@@ -1,0 +1,44 @@
+{
+  "name": "express-gateway-plugin-statsd",
+  "version": "0.0.26",
+  "description": "Statsd Client implementation plugin for express-gateway-statsd.",
+  "main": "manifest.js",
+  "scripts": {
+    "test": "jest --env node",
+    "semantic-release": "semantic-release"
+  },
+  "files": [
+    "manifest.js",
+    "README.md",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tagkiller/express-gateway-plugin-statsd.git"
+  },
+  "keywords": [
+    "express",
+    "gateway",
+    "express-gateway",
+    "influx",
+    "influxdb",
+    "client"
+  ],
+  "author": "Younes Baddich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tagkiller/express-gateway-plugin-statsd/issues"
+  },
+  "homepage": "https://github.com/tagkiller/express-gateway-plugin-statsd#readme",
+  "devDependencies": {
+    "@types/json-schema": "^7.0.3",
+    "axios": "^0.21.1",
+    "express": "^4.16.4",
+    "express-gateway": "^1.16.10",
+    "jest": "26.6",
+    "semantic-release": "^17.4.0"
+  },
+  "dependencies": {
+    "statsd-client": "^0.4.7"
+  }
+}
