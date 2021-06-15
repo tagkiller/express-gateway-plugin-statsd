@@ -31,16 +31,6 @@ const plugin = {
         $id: 'http://express-gateway.io/schemas/policies/statsd.json',
         type: 'object',
         properties: {
-          measurement: {
-            type: 'string',
-            description: 'Measurement name',
-            default: 'requests',
-          },
-          application: {
-            type: 'string',
-            description: 'The name of the application that you monitor (default: default)',
-            default: 'default',
-          },
           removeIdsRegex: {
             type: 'string',
             description: 'Regex to use to match ids to remove from the path tag',
@@ -51,47 +41,23 @@ const plugin = {
             description: 'Whether to remove Ids from the path that are sent to metrics or not (default: false)',
             default: false,
           },
-          bufferSize: {
-            type: 'number',
-            description: 'The size to match before sending the data to influx',
-            default: 100,
-          },
-          delay: {
-            type: 'number',
-            description: 'The time to wait before sending the data to influx',
-            default: 5000,
-          },
           statsdConfig: {
             type: 'object',
             properties: {
               host: {
                 type: 'string',
-                description: 'The HTTP endpoint when using the remote sampler (default: localhost)',
+                description: 'Where to send the stats (default: localhost)',
                 default: 'localhost',
               },
               port: {
                 type: 'number',
-                description: 'The http port (default: 8086)',
-                default: 8086,
+                description: 'The http port (default: 8125)',
+                default: 8125,
               },
               prefix: {
                 type: 'string',
                 description: 'Prefix all stats with this value (default "")',
                 default: '',
-              },
-              database: {
-                type: 'string',
-                description: 'Database in which to send the data'
-              },
-              username: {
-                type: 'string',
-                description: 'Username to connect to the database (default: root)',
-                default: 'root',
-              },
-              password: {
-                type: 'string',
-                description: 'Password to connect to the database (default: root)',
-                default: 'root',
               },
             },
           },
