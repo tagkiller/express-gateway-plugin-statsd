@@ -1,6 +1,6 @@
 {
   "name": "express-gateway-plugin-statsd",
-  "version": "0.0.26",
+  "version": "0.0.1",
   "description": "Statsd Client implementation plugin for express-gateway-statsd.",
   "main": "manifest.js",
   "scripts": {
