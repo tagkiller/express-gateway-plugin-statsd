@@ -2,15 +2,6 @@
 /// <reference path="./node_modules/express-gateway/index.d.ts" />
 const SDC = require('statsd-client');
 const logger = require('express-gateway/lib/logger').gateway;
-const { performance, PerformanceObserver } = require("perf_hooks")
-
-const perfObserver = new PerformanceObserver((items) => {
-  items.getEntries().forEach((entry) => {
-    console.log(entry)
-  })
-})
-
-perfObserver.observe({ entryTypes: ["measure"], buffered: true })
 
 function getDurationInMilliseconds(start) {
   const NS_PER_SEC = 1e9
@@ -72,7 +63,6 @@ const plugin = {
 
         function writePoint(start, req, res) {
           const duration = getDurationInMilliseconds(start);
-          performance.mark('regex-start');
           const path = actionParams.removeIds ? req.path.replace(removeIdsRegex, '_id_') : req.path;
           sdc.increment('response_code.' + res.statusCode);
           sdc.increment('response_code' + path + '.' + res.statusCode);
@@ -83,13 +73,9 @@ const plugin = {
             res.removeListener('finish', writePoint);
             res.removeListener('error', removeListeners);
             res.removeListener('close', removeListeners);
-            performance.mark('listening-end')
-            performance.measure('listening', 'listening-start', 'listening-end')
         }
-
         return (req, res, next) => {
           const start = process.hrtime();
-          performance.mark('listening-start');
           // Look at the following doc for the list of events : https://nodejs.org/api/http.html
           res.once('finish', () => writePoint(start, req, res));
           res.once('error', () => removeListeners(res));
