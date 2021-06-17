@@ -13,7 +13,7 @@ function getDurationInMilliseconds(start) {
 
 const plugin = {
   version: '1.0.0',
-  policies: ['influx'],
+  policies: ['statsd'],
 
   init: pluginContext => {
     pluginContext.registerPolicy({
