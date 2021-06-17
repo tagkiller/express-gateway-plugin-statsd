@@ -72,7 +72,7 @@ const plugin = {
           const duration = getDurationInMilliseconds(start);
           const path = actionParams.removeIds ? req.path.replace(removeIdsRegex, '_id_') : req.path;
 
-          sdc.time('response_time' + path, new Date(Date.now() - duration), {
+          sdc.time('request_duration', new Date(Date.now() - duration), {
             tags: {
               path: path,
               method: req.method,
