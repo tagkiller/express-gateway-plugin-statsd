@@ -1,6 +1,6 @@
 // @ts-check
 /// <reference path="./node_modules/express-gateway/index.d.ts" />
-const SDC = require('statsd-client');
+const SDC = require('@fiverr/statsd-client');
 const logger = require('express-gateway/lib/logger').gateway;
 
 function getDurationInMilliseconds(start) {
@@ -47,26 +47,40 @@ const plugin = {
               },
               prefix: {
                 type: 'string',
-                description: 'Prefix all stats with this value (default "")',
-                default: '',
+                description: 'Prefix all stats with this value (default "apigateway")',
+                default: 'apigateway',
+              },
+              schema: {
+                type: 'string',
+                description: 'scheme to use to format the data (default: "datadog")',
+                default: 'datadog',
               },
             },
           },
         },
       },
       policy: (actionParams) => {
-        logger.debug(`configuring statsd client with the following parameters : ${JSON.stringify(actionParams.influxdbSchema)}`)
         const removeIdsRegex = new RegExp(actionParams.removeIdsRegex, 'g');
-        const sdc = new SDC({
+        const config = {
           ...actionParams.statsdConfig,
-        });
+          errorHandler: (error, data) => logger.error(`${error} - data : ${JSON.stringify(data)}`)
+        }
+
+        const sdc = new SDC(config);
 
         function writePoint(start, req, res) {
           const duration = getDurationInMilliseconds(start);
           const path = actionParams.removeIds ? req.path.replace(removeIdsRegex, '_id_') : req.path;
-          sdc.increment('response_code.' + res.statusCode);
-          sdc.increment('response_code' + path + '.' + res.statusCode);
-          sdc.timing('response_time' + path, new Date(Date.now() - duration));
+
+          sdc.time('response_time' + path, new Date(Date.now() - duration), {
+            tags: {
+              path: path,
+              method: req.method,
+              status_code: res.statusCode,
+              host: req.hostname,
+              service: 'apigateway',
+            },
+          });
         };
         // To avoid memory leak
         function removeListeners(res) {
