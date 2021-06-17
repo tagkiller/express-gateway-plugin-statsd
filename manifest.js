@@ -50,7 +50,7 @@ const plugin = {
                 description: 'Prefix all stats with this value (default "apigateway")',
                 default: 'apigateway',
               },
-              schema: {
+              scheme: {
                 type: 'string',
                 description: 'scheme to use to format the data (default: "datadog")',
                 default: 'datadog',
