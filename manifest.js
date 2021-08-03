@@ -62,7 +62,8 @@ const plugin = {
       policy: (actionParams) => {
         const removeIdsRegex = new RegExp(actionParams.removeIdsRegex, 'g');
         const config = {
-          ...actionParams.statsdConfig,
+          ...actionParams.statsdConfig,          
+          sanitise: string => `${string}`.replace((?!\.)\W/g, '_').toLowerCase(),
           errorHandler: (error, data) => logger.error(`${error} - data : ${JSON.stringify(data)}`)
         }
 
